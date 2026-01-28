@@ -26,6 +26,9 @@ A Docker container for running a StarRupture dedicated server using SteamCMD.
 | RAM      | 8GB     | 16GB        |
 | Storage  | 30GB    | 50GB        |
 
+> [!WARNING]
+> **Security Vulnerability Mitigation**: This container only exposes UDP ports to prevent a remote control vulnerability that affects the StarRupture dedicated server. Do NOT expose TCP port 7777, as it allows unauthorized remote access to server settings and save files. See [StarRupture Security Announcement](https://wiki.starrupture-utilities.com/en/dedicated-server/Vulnerability-Announcement) for details.
+
 > [!NOTE]
 > StarRupture is in Early Access. Server features and requirements may change.
 
@@ -48,7 +51,6 @@ services:
     stop_grace_period: 30s
     ports:
       - 7777:7777/udp
-      - 7777:7777/tcp
       - 27015:27015/udp
     env_file:
       - .env
@@ -70,7 +72,6 @@ docker run -d \
     --name starrupture \
     --stop-timeout 30 \
     -p 7777:7777/udp \
-    -p 7777:7777/tcp \
     -p 27015:27015/udp \
     --env-file .env \
     -v ./server-files:/home/steam/server-files
@@ -86,7 +87,7 @@ You can use the following values to change the settings of the server on boot.
 | PUID              | 1000                 | User ID for file permissions                                                                              |
 | PGID              | 1000                 | Group ID for file permissions                                                                             |
 | SERVER_NAME       | starrupture-server   | Name of the server                                                                                        |
-| DEFAULT_PORT      | 7777                 | The port the server listens on (UDP + TCP)                                                                      |
+| DEFAULT_PORT      | 7777                 | The port the server listens on (UDP only - TCP disabled for security)                                    |
 | QUERY_PORT        | 27015                | The query port for server browser and status queries (UDP)                                                |
 | MULTIHOME         |                      | Optional: Bind to a specific network interface IP address                                                 |
 | UPDATE_ON_START   | true                 | If set to false, skips downloading and validating server files from Steam on startup                      |
@@ -103,9 +104,13 @@ You can use the following values to change the settings of the server on boot.
 
 ## Port Forwarding
 
-If your server is behind a router, you need to forward the following port:
+If your server is behind a router, you need to forward the following ports:
 
-* **7777** (UDP + TCP) - Game server port
+* **7777** (UDP only) - Game server port (DO NOT forward TCP - security vulnerability)
+* **27015** (UDP) - Query port
+
+> [!WARNING]
+> Only forward UDP ports. Forwarding TCP port 7777 exposes your server to a remote control vulnerability.
 
 For more information and instructions specific to your router, visit [portforward.com](https://portforward.com/).
 
