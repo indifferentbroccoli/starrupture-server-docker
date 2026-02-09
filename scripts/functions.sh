@@ -80,3 +80,26 @@ shutdown_server() {
     
     return "$return_val"
 }
+
+# Generate password JSON files
+generate_password_files() {
+    local server_files="$1"
+    local admin_pass="${ADMIN_PASSWORD:-}"
+    local player_pass="${PLAYER_PASSWORD:-}"
+    
+    [ -z "$admin_pass" ] && [ -z "$player_pass" ] && return
+    
+    LogInfo "Generating encrypted password files..."
+    
+    local response=$(curl -sf -X POST https://starrupture-utilities.com/passwords/ \
+        -d "adminpassword=${admin_pass}" \
+        -d "playerpassword=${player_pass}")
+    
+    if [ $? -ne 0 ]; then
+        LogWarn "Failed to generate passwords via API. Generate manually at: https://starrupture-utilities.com/passwords/"
+        return
+    fi
+    
+    [ -n "$admin_pass" ] && echo "$response" | jq -r '.password_json' > "$server_files/Password.json" 2>/dev/null && LogSuccess "Admin password configured"
+    [ -n "$player_pass" ] && echo "$response" | jq -r '.playerpassword_json' > "$server_files/PlayerPassword.json" 2>/dev/null && LogSuccess "Player password configured"
+}

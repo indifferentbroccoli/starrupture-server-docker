@@ -12,6 +12,37 @@ LogAction "Starting StarRupture Dedicated Server"
 DEFAULT_PORT="${DEFAULT_PORT:-7777}"
 QUERY_PORT="${QUERY_PORT:-27015}"
 SERVER_NAME="${SERVER_NAME:-starrupture-server}"
+USE_DSSETTINGS="${USE_DSSETTINGS:-true}"
+
+if [ "${USE_DSSETTINGS}" = "true" ]; then
+    SESSION_NAME="${SESSION_NAME:-StarRuptureServer}"
+    SAVE_GAME_INTERVAL="${SAVE_GAME_INTERVAL:-300}"
+    START_NEW_GAME="${START_NEW_GAME:-false}"
+    LOAD_SAVED_GAME="${LOAD_SAVED_GAME:-true}"
+    SAVE_GAME_NAME="${SAVE_GAME_NAME:-AutoSave0.sav}"
+
+    DSSETTINGS_FILE="$SERVER_FILES/DSSettings.txt"
+
+    LogInfo "Generating DSSettings.txt from environment variables"
+    cat > "$DSSETTINGS_FILE" <<EOF
+{
+  "SessionName": "$SESSION_NAME",
+  "SaveGameInterval": "$SAVE_GAME_INTERVAL",
+  "StartNewGame": "$START_NEW_GAME",
+  "LoadSavedGame": "$LOAD_SAVED_GAME",
+  "SaveGameName": "$SAVE_GAME_NAME"
+}
+EOF
+
+    LogSuccess "DSSettings.txt configured with SessionName: $SESSION_NAME"
+    
+    generate_password_files "$SERVER_FILES"
+else
+    LogWarn "USE_DSSETTINGS is disabled - DSSettings.txt will not be generated"
+    LogWarn "You must forward port 7777 TCP to use the in-game Server Manager"
+    LogWarn "WARNING: Forwarding TCP exposes your server to security vulnerabilities"
+    LogWarn "See: https://wiki.starrupture-utilities.com/en/dedicated-server/Vulnerability-Announcement"
+fi
 
 SERVER_EXEC="$SERVER_FILES/StarRupture/Binaries/Win64/StarRuptureServerEOS-Win64-Shipping.exe"
 

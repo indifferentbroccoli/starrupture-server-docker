@@ -72,7 +72,7 @@ docker run -d \
     -p 7777:7777/tcp \
     -p 27015:27015/udp \
     --env-file .env \
-    -v ./server-files:/home/steam/server-files
+    -v ./server-files:/home/steam/server-files \
     indifferentbroccoli/starrupture-server-docker
 ```
 
@@ -89,6 +89,14 @@ You can use the following values to change the settings of the server on boot.
 | QUERY_PORT        | 27015                | The query port for server browser and status queries (UDP)                                                |
 | MULTIHOME         |                      | Optional: Bind to a specific network interface IP address                                                 |
 | UPDATE_ON_START   | true                 | If set to false, skips downloading and validating server files from Steam on startup                      |
+| USE_DSSETTINGS    | true                 | Enable/disable DSSettings.txt generation. If false, you must forward port 7777 TCP (security risk!)       |
+| ADMIN_PASSWORD    |                      | Admin password (automatically encrypted and saved to Password.json)                                       |
+| PLAYER_PASSWORD   |                      | Player join password (automatically encrypted and saved to PlayerPassword.json)                           |
+| SESSION_NAME      | StarRuptureServer    | Save game session name (max 20 characters)                                                                |
+| SAVE_GAME_INTERVAL| 300                  | Auto-save interval in seconds                                                                             |
+| START_NEW_GAME    | false                | Create a new world on startup ("true" or "false")                                                        |
+| LOAD_SAVED_GAME   | true                 | Load existing save game on startup ("true" or "false")                                                   |
+| SAVE_GAME_NAME    | AutoSave0.sav        | Name of the save file to load                                                                             |
 
 ## Connecting to Your Server
 
@@ -102,20 +110,54 @@ You can use the following values to change the settings of the server on boot.
 
 ## Port Forwarding
 
-If your server is behind a router, you need to forward the following port:
+> [!CAUTION]
+> **Default (Secure)**: Forward **7777 UDP only**
+> 
+> **If `USE_DSSETTINGS=false`**: Must forward **7777 UDP + TCP** - this exposes a critical remote control vulnerability. See [vulnerability disclosure](https://wiki.starrupture-utilities.com/en/dedicated-server/Vulnerability-Announcement).
 
-* **7777** (UDP + TCP) - Game server port
+## Server Configuration (DSSettings.txt)
 
-For more information and instructions specific to your router, visit [portforward.com](https://portforward.com/).
+> [!IMPORTANT]
+> **First Boot**: Set `START_NEW_GAME=true` and `LOAD_SAVED_GAME=false`, join server, save game, then change to `START_NEW_GAME=false` and `LOAD_SAVED_GAME=true`.
+
+Configure save game behavior via environment variables in your `.env` file:
+
+```bash
+USE_DSSETTINGS=true          # false = use in-game Server Manager (requires TCP, security risk)
+SESSION_NAME=StarRuptureServer
+SAVE_GAME_INTERVAL=300
+START_NEW_GAME=false         # true on first boot only
+LOAD_SAVED_GAME=true         # false on first boot only
+SAVE_GAME_NAME=AutoSave0.sav
+```
+
+### Setting Passwords
+
+To set admin and player join passwords, add them to your `.env` file:
+
+```bash
+ADMIN_PASSWORD=your_admin_password
+PLAYER_PASSWORD=your_player_password
+```
+
+The container uses the starrupture-utilities.com API to encrypt passwords and generate the required JSON files on startup.
+
+> [!NOTE]
+> If the API is unavailable, you can manually generate password files at [https://starrupture-utilities.com/passwords/](https://starrupture-utilities.com/passwords/) and place them in the `server-files/` directory.
+
+### Loading an Existing Save
+
+1. Place `.sav` and `.met` files in `server-files/StarRupture/Saved/SaveGames/[SessionName]/`
+2. Rename to `AutoSave0.sav` and `AutoSave0.met`
+3. Set matching `SESSION_NAME` in `.env`
+4. Ensure `LOAD_SAVED_GAME=true` and `START_NEW_GAME=false`
 
 ## Server Management
 
-The StarRupture dedicated server uses an in-game management interface:
+> [!NOTE]
+> With `USE_DSSETTINGS=true` (default), the in-game Server Manager is disabled for security. Use environment variables to configure your server instead.
 
-1. Launch StarRupture on your PC
-2. Go to **Manage Server**
-3. Enter your server's IP address and password (you will set this on first connection)
-4. From here you can create, load, and manage server worlds
+If using `USE_DSSETTINGS=false`, you can use the in-game Server Manager by launching StarRupture and going to **Manage Server**.
 
 ## Volumes
 
