@@ -10,7 +10,6 @@ LogAction "Starting StarRupture Dedicated Server"
 
 # Set defaults if not provided
 DEFAULT_PORT="${DEFAULT_PORT:-7777}"
-QUERY_PORT="${QUERY_PORT:-27015}"
 SERVER_NAME="${SERVER_NAME:-starrupture-server}"
 USE_DSSETTINGS="${USE_DSSETTINGS:-true}"
 
@@ -55,11 +54,10 @@ fi
 
 LogInfo "Found server executable: ${SERVER_EXEC}"
 LogInfo "Server starting on port ${DEFAULT_PORT}"
-LogInfo "Query port: ${QUERY_PORT}"
 LogInfo "Server name: ${SERVER_NAME}"
 
 # Build the startup command with Wine and xvfb
-STARTUP_CMD="xvfb-run --auto-servernum wine ${SERVER_EXEC} -Log -Port=${DEFAULT_PORT} -QueryPort=${QUERY_PORT} -ServerName=\"${SERVER_NAME}\""
+STARTUP_CMD="xvfb-run --auto-servernum wine ${SERVER_EXEC} -Log -Port=${DEFAULT_PORT} -ServerName=\"${SERVER_NAME}\""
 
 if [ "${USE_DSSETTINGS}" = "true" ]; then
     STARTUP_CMD="${STARTUP_CMD} -RCWebControlDisable -RCWebInterfaceDisable"
