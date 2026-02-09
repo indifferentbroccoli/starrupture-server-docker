@@ -87,7 +87,8 @@ generate_password_files() {
     local admin_pass="${ADMIN_PASSWORD:-}"
     local player_pass="${PLAYER_PASSWORD:-}"
     
-    [ -z "$admin_pass" ] && [ -z "$player_pass" ] && return
+    
+    [ -z "$admin_pass" ] && [ -z "$player_pass" ] && LogWarn "Both passwords empty, skipping generation" && return
     
     LogInfo "Generating encrypted password files..."
     
