@@ -35,7 +35,7 @@ EOF
 
     LogSuccess "DSSettings.txt configured with SessionName: $SESSION_NAME"
     
-    generate_password_files "$SERVER_FILES"
+    generate_password_files "$SERVER_FILES" "${ADMIN_PASSWORD:-}" "${PLAYER_PASSWORD:-}"
 else
     LogWarn "USE_DSSETTINGS is disabled - DSSettings.txt will not be generated"
     LogWarn "You must forward port 7777 TCP to use the in-game Server Manager"

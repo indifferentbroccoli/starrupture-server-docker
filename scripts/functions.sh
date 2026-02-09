@@ -84,9 +84,8 @@ shutdown_server() {
 # Generate password JSON files
 generate_password_files() {
     local server_files="$1"
-    local admin_pass="${ADMIN_PASSWORD:-}"
-    local player_pass="${PLAYER_PASSWORD:-}"
-    
+    local admin_pass="$2"
+    local player_pass="$3"
     
     [ -z "$admin_pass" ] && [ -z "$player_pass" ] && LogWarn "Both passwords empty, skipping generation" && return
     
