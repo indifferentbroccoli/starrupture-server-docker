@@ -87,6 +87,14 @@ generate_password_files() {
     local admin_pass="$2"
     local player_pass="$3"
     
+    # Clean up password files if passwords are empty
+    if [ -z "$admin_pass" ] && [ -f "$server_files/Password.json" ]; then
+        rm -f "$server_files/Password.json" && LogInfo "Removed admin password"
+    fi
+    if [ -z "$player_pass" ] && [ -f "$server_files/PlayerPassword.json" ]; then
+        rm -f "$server_files/PlayerPassword.json" && LogInfo "Removed player password"
+    fi
+    
     [ -z "$admin_pass" ] && [ -z "$player_pass" ] && return
     
     LogInfo "Generating encrypted password files..."
