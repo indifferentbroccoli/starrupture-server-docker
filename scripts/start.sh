@@ -11,7 +11,7 @@ LogAction "Starting StarRupture Dedicated Server"
 # Set defaults if not provided
 DEFAULT_PORT="${DEFAULT_PORT:-7777}"
 SERVER_NAME="${SERVER_NAME:-starrupture-server}"
-USE_DSSETTINGS="${USE_DSSETTINGS:-true}"
+USE_DSSETTINGS="${USE_DSSETTINGS:-false}"
 
 if [ "${USE_DSSETTINGS}" = "true" ]; then
     SESSION_NAME="${SESSION_NAME:-StarRuptureServer}"

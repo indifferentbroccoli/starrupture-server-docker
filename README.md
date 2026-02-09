@@ -89,7 +89,7 @@ You can use the following values to change the settings of the server on boot.
 | QUERY_PORT        | 27015                | The query port for server browser and status queries (UDP)                                                |
 | MULTIHOME         |                      | Optional: Bind to a specific network interface IP address                                                 |
 | UPDATE_ON_START   | true                 | If set to false, skips downloading and validating server files from Steam on startup                      |
-| USE_DSSETTINGS    | true                 | Enable/disable DSSettings.txt generation. If false, you must forward port 7777 TCP (security risk!)       |
+| USE_DSSETTINGS    | false                | Enable/disable DSSettings.txt generation. If false, you must forward port 7777 TCP (security risk!)       |
 | ADMIN_PASSWORD    |                      | Admin password (automatically encrypted and saved to Password.json)                                       |
 | PLAYER_PASSWORD   |                      | Player join password (automatically encrypted and saved to PlayerPassword.json)                           |
 | SESSION_NAME      | StarRuptureServer    | Save game session name (max 20 characters)                                                                |
@@ -123,7 +123,7 @@ You can use the following values to change the settings of the server on boot.
 Configure save game behavior via environment variables in your `.env` file:
 
 ```bash
-USE_DSSETTINGS=true          # false = use in-game Server Manager (requires TCP, security risk)
+USE_DSSETTINGS=true          # false (default) = use in-game Server Manager (requires TCP, security risk)
 SESSION_NAME=StarRuptureServer
 SAVE_GAME_INTERVAL=300
 START_NEW_GAME=false         # true on first boot only
@@ -155,7 +155,7 @@ The container uses the starrupture-utilities.com API to encrypt passwords and ge
 ## Server Management
 
 > [!NOTE]
-> With `USE_DSSETTINGS=true` (default), the in-game Server Manager is disabled for security. Use environment variables to configure your server instead.
+> With `USE_DSSETTINGS=true`, the in-game Server Manager is disabled for security. Use environment variables to configure your server instead.
 
 If using `USE_DSSETTINGS=false`, you can use the in-game Server Manager by launching StarRupture and going to **Manage Server**.
 
