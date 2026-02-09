@@ -35,7 +35,6 @@ EOF
 
     LogSuccess "DSSettings.txt configured with SessionName: $SESSION_NAME"
     
-    LogInfo "Debug - Passwords before function call: ADMIN='${ADMIN_PASSWORD}' PLAYER='${PLAYER_PASSWORD}'"
     generate_password_files "$SERVER_FILES" "${ADMIN_PASSWORD:-}" "${PLAYER_PASSWORD:-}"
 else
     LogWarn "USE_DSSETTINGS is disabled - DSSettings.txt will not be generated"
@@ -44,7 +43,7 @@ else
     LogWarn "See: https://wiki.starrupture-utilities.com/en/dedicated-server/Vulnerability-Announcement"
 fi
 
-SERVER_EXEC="$SERVER_FILES/StarRuptureServerEOS.exe"
+SERVER_EXEC="$SERVER_FILES/StarRupture/Binaries/Win64/StarRuptureServerEOS-Win64-Shipping.exe"
 
 if [ ! -f "$SERVER_EXEC" ]; then
     LogError "Could not find server executable at: $SERVER_EXEC"
