@@ -100,6 +100,13 @@ generate_password_files() {
         return
     fi
     
-    [ -n "$admin_pass" ] && echo "$response" | jq -r '.adminpassword' > "$server_files/Password.json" 2>/dev/null && LogSuccess "Admin password configured"
-    [ -n "$player_pass" ] && echo "$response" | jq -r '.playerpassword' > "$server_files/PlayerPassword.json" 2>/dev/null && LogSuccess "Player password configured"
+    if [ -n "$admin_pass" ]; then
+        local admin_encrypted=$(echo "$response" | jq -r '.adminpassword')
+        echo "{\"password\":\"$admin_encrypted\"}" > "$server_files/Password.json" && LogSuccess "Admin password configured"
+    fi
+    
+    if [ -n "$player_pass" ]; then
+        local player_encrypted=$(echo "$response" | jq -r '.playerpassword')
+        echo "{\"password\":\"$player_encrypted\"}" > "$server_files/PlayerPassword.json" && LogSuccess "Player password configured"
+    fi
 }
