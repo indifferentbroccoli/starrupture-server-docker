@@ -68,6 +68,11 @@ if [ -n "${MULTIHOME}" ]; then
     STARTUP_CMD="${STARTUP_CMD} -MULTIHOME=${MULTIHOME}"
 fi
 
+if [ -n "${MAX_PLAYERS}" ]; then
+    LogInfo "Setting max players to ${MAX_PLAYERS}"
+    STARTUP_CMD="${STARTUP_CMD} -MaxPlayers=${MAX_PLAYERS}"
+fi
+
 LogInfo "Starting with Wine..."
 
 # Start the server

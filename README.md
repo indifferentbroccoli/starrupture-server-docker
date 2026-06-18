@@ -86,6 +86,7 @@ You can use the following values to change the settings of the server on boot.
 | SERVER_NAME       | starrupture-server   | Name of the server                                                                                        |
 | DEFAULT_PORT      | 7777                 | The port the server listens on (UDP + TCP)                                                                      |
 | MULTIHOME         |                      | Optional: Bind to a specific network interface IP address                                                 |
+| MAX_PLAYERS       |                      | Optional: Max players via `-MaxPlayers` launch arg. StarRupture's stable cap is 4; leave blank for default. Unofficial flag — values above 4 are reported to cause desync/crashes |
 | UPDATE_ON_START   | true                 | If set to false, skips downloading and validating server files from Steam on startup                      |
 | USE_DSSETTINGS    | false                | Enable/disable DSSettings.txt generation. If false, you must forward port 7777 TCP (security risk!)       |
 | ADMIN_PASSWORD    |                      | Admin password (automatically encrypted and saved to Password.json)                                       |
