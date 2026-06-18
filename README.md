@@ -70,7 +70,6 @@ docker run -d \
     --stop-timeout 30 \
     -p 7777:7777/udp \
     -p 7777:7777/tcp \
-    -p 27015:27015/udp \
     --env-file .env \
     -v ./server-files:/home/steam/server-files \
     indifferentbroccoli/starrupture-server-docker
@@ -86,7 +85,6 @@ You can use the following values to change the settings of the server on boot.
 | PGID              | 1000                 | Group ID for file permissions                                                                             |
 | SERVER_NAME       | starrupture-server   | Name of the server                                                                                        |
 | DEFAULT_PORT      | 7777                 | The port the server listens on (UDP + TCP)                                                                      |
-| QUERY_PORT        | 27015                | The query port for server browser and status queries (UDP)                                                |
 | MULTIHOME         |                      | Optional: Bind to a specific network interface IP address                                                 |
 | UPDATE_ON_START   | true                 | If set to false, skips downloading and validating server files from Steam on startup                      |
 | USE_DSSETTINGS    | false                | Enable/disable DSSettings.txt generation. If false, you must forward port 7777 TCP (security risk!)       |
