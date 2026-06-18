@@ -24,7 +24,6 @@ ENV HOME=/home/steam \
     QUERY_PORT=27015 \
     SERVER_NAME=starrupture-server \
     MULTIHOME="" \
-    MAX_PLAYERS="" \
     UPDATE_ON_START=true \
     USE_DSSETTINGS=false \
     SESSION_NAME="StarRuptureServer" \
