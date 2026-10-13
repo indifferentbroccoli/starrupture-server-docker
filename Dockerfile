@@ -20,6 +20,7 @@ LABEL maintainer="support@indifferentbroccoli.com" \
       dockerhub="https://hub.docker.com/r/indifferentbroccoli/starrupture-server-docker"
 
 ENV HOME=/home/steam \
+    WINEDLLOVERRIDES="dwmapi=n,b" \
     DEFAULT_PORT=7777 \
     QUERY_PORT=27015 \
     SERVER_NAME=starrupture-server \
